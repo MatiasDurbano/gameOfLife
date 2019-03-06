@@ -66,7 +66,7 @@ function draw(){
                     if (vecinos == 3 && virus !=3) {
                         next[i][j] = 1;
                         }
-                        else if(virus == 3 && vecinos !=3) {
+                        else if(virus ==3 || virus == 5 || virus == 7 ) {
                             next[i][j] = 2;
                             }
                         else {
