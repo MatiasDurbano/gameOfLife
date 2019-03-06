@@ -23,7 +23,7 @@ function setup(){
     grid = makeArray2D(col,fil);
     for(let i=0; i< col ;i++){
             for(let j=0; j<fil;j++){
-                grid[i][j] = floor(random(2));
+                grid[i][j] = floor(random(3));
             }
         }
 }
@@ -40,7 +40,12 @@ function draw(){
                 fill(color(250,0,0));
                 stroke(0);
                 rect(x,y,resolucion-1,resolucion-1);
+            }else if(grid[i][j]==2){
+                fill(color(0,250,0));
+                stroke(0);
+                rect(x,y,resolucion-1,resolucion-1);
             }
+            
         }
     }
 
@@ -54,11 +59,27 @@ function draw(){
                 let vecinos = ContVecinos(grid, i, j);
                 let virus = contVirus(grid, i, j);
             
+                let bool = virusCerca(grid, i, j);
+
                 if (state == 0 && vecinos == 3) {
                     next[i][j] = 1;
-                }else if (state == 1 && (vecinos < 2 || vecinos > 3)) {
+                }else if(state == 0 && virus == 4){
+                    next[i][j] = 2;
+                    }else if (state == 1 && (vecinos < 2 || vecinos > 3)) {
                         next[i][j] = 0;
-                    }else {
+                        }else if(state == 2 && (virus < 2 || virus > 5)) {
+                                next[i][j] = 0;
+                            }else if(state == 1 && bool){
+                                next[i][j] = 2;
+                            }/*else if(state == 1 && virus>vecinos){
+                                    next[i][j] = 2;
+                                }else if(state == 2 && virus<vecinos){
+                                        next[i][j] = 1;
+                                    }else if(state== 2|| state ==1 &&virus ==vecinos){
+                                            next[i][j] = 0;
+                                        }*/
+                    
+                    else {
                         next[i][j] = state;
                     }   
             }
@@ -87,9 +108,25 @@ function ContVecinos(grid, x, y) {
         let colum = (x + i + col) % col;
         let filas = (y + j + fil) % fil;
         if(grid[colum][filas]==2);
-        sum ++;
-      }
+                sum ++;
+        }
     }
     sum --;
     return sum;
   }
+
+  function virusCerca(grid, x, y){
+    let bool = false;
+    for (let i = -1; i < 2; i++) {
+      for (let j = -1; j < 2; j++) {
+        let colum = (x + i + col) % col;
+        let filas = (y + j + fil) % fil;
+        if(grid[colum][filas]==2){
+            bool=true;    
+            return bool
+        }
+      }
+    }
+    
+    return bool;
+  }   
